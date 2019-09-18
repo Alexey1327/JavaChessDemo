@@ -4,14 +4,17 @@ public class PieceQueen extends AbstractPiece implements PieceInterface {
 
     private final char symbol = 'Q';
 
-
     public PieceQueen(int x, int y, PieceColor color) {
         super(x, y, color);
     }
 
     @Override
     public Character getSymbol() {
-        return this.symbol;
+        if (this.getColor() == PieceColor.WHITE) {
+            return this.symbol;
+        } else {
+            return Character.toLowerCase(this.symbol);
+        }
     }
 
     @Override

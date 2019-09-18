@@ -10,7 +10,11 @@ class PieceBishop extends AbstractPiece implements PieceInterface {
 
     @Override
     public Character getSymbol() {
-        return this.symbol;
+        if (this.getColor() == PieceColor.WHITE) {
+            return this.symbol;
+        } else {
+            return Character.toLowerCase(this.symbol);
+        }
     }
 
 

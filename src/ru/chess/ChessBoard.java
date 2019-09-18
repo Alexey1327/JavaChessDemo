@@ -96,8 +96,6 @@ class ChessBoard {
         this.initPieces();
         this.placePieces();
 
-        System.out.println(whitePieces[3].getMoveVariants(this));
-
         return this;
     }
 

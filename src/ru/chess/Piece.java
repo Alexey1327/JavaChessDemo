@@ -1,8 +1,10 @@
 package ru.chess;
 
-import java.util.ArrayList;
+interface Piece {
 
-interface PieceInterface {
+    Character getSymbol();
+
+    String getPieceName();
 
     MoveVariants getMoveVariants(ChessBoard board);
 }

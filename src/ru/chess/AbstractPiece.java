@@ -1,6 +1,6 @@
 package ru.chess;
 
-public abstract class AbstractPiece implements PieceInterface{
+public abstract class AbstractPiece implements Piece {
 
     private int x, y;
 
@@ -8,96 +8,58 @@ public abstract class AbstractPiece implements PieceInterface{
 
     private boolean alive = true;
 
-    MoveVariants moveVariants;
+    String name;
 
     public AbstractPiece(int x, int y, PieceColor color) {
         this.x = x;
         this.y = y;
         this.color = color;
-        moveVariants = new MoveVariants();
     }
 
-    public abstract Character getSymbol();
-
-    public boolean isAlive() {
-        return alive;
-    }
-
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public PieceColor getColor() {
-        return color;
+    public Character getSymbol() {
+        if (this.getColor() == PieceColor.WHITE) {
+            return name.charAt(0);
+        } else {
+            return Character.toLowerCase(name.charAt(0));
+        }
     }
 
     public abstract MoveVariants getMoveVariants(ChessBoard board);
 
-    public byte getEatWeight(AbstractPiece piece) {
-        if (piece instanceof PiecePawn) {
-            return MoveVariant.EAT_PAWN_WEIGHT;
-        }
-        if (piece instanceof PieceKnight) {
-            return MoveVariant.EAT_KNIGHT_WEIGHT;
-        }
-        if (piece instanceof PieceBishop) {
-            return MoveVariant.EAT_BISHOP_WEIGHT;
-        }
-        if (piece instanceof PieceRook) {
-            return MoveVariant.EAT_ROOK_WEIGHT;
-        }
-        if (piece instanceof PieceQueen) {
-            return MoveVariant.EAT_QUEEN_WEIGHT;
-        }
-        if (piece instanceof PieceKing) {
-            return MoveVariant.EAT_KING_WEIGHT;
-        }
-
-        throw new GameException("Unknown Piece Type!");
-    }
-
-    public static String getChessCoords(int x, int y) {
-        return Character.toString('A'+x) + Character.toString('1'+y);
-    }
-
-    public boolean addVariant(ChessBoard board, MoveVariants variants, int toX, int toY) {
-        AbstractPiece piece;
-        MoveVariant variant;
-
-        if (!board.isCellValid(toX,toY)) {
-            return false;
-        }
-
-        piece = board.getCell(toX, toY);
-        if (piece != null) {
-            if (piece.getColor() != this.getColor()) {
-                variant = new MoveVariant(this.getX(), this.getY(), toX, toY, getEatWeight(piece), MoveResult.EAT, this.getSymbol());
-                variants.add(variant);
-            } else {
-                return false;
-            }
+    @Override
+    public String getPieceName() {
+        if (color == PieceColor.WHITE) {
+            return "White " + name;
         } else {
-            variant = new MoveVariant(this.getX(), this.getY(), toX, toY, MoveVariant.REGULAR_MOVE_WEIGHT, MoveResult.MOVE, this.getSymbol());
-            variants.add(variant);
+            return "Black " + name;
         }
-
-        return true;
     }
 
+    boolean isAlive() {
+        return alive;
+    }
+
+    void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+
+    int getX() {
+        return x;
+    }
+
+    void setX(int x) {
+        this.x = x;
+    }
+
+    int getY() {
+        return y;
+    }
+
+    void setY(int y) {
+        this.y = y;
+    }
+
+    PieceColor getColor() {
+        return color;
+    }
 }

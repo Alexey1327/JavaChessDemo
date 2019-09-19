@@ -1,40 +1,30 @@
 package ru.chess;
 
-class PieceKing extends AbstractPiece implements PieceInterface {
+class PieceKing extends AbstractPiece implements Piece {
 
-    private final char symbol = 'K';
-
-    public PieceKing(int x, int y, PieceColor color) {
+    PieceKing(int x, int y, PieceColor color) {
         super(x, y, color);
-    }
-
-    @Override
-    public Character getSymbol() {
-        if (this.getColor() == PieceColor.WHITE) {
-            return this.symbol;
-        } else {
-            return Character.toLowerCase(this.symbol);
-        }
+        this.name = "King";
     }
 
     @Override
     public MoveVariants getMoveVariants(ChessBoard board) {
 
-        int toX = this.getX(),
-            toY = this.getY();
+        int fromX = this.getX(),
+            fromY = this.getY();
 
-        this.moveVariants.clear();
+        MoveVariants variants = new MoveVariants();
 
-        addVariant(board, this.moveVariants, toX - 1, toY + 1);
-        addVariant(board, this.moveVariants, toX, toY + 1);
-        addVariant(board, this.moveVariants, toX + 1, toY + 1);
-        addVariant(board, this.moveVariants, toX - 1, toY);
-        addVariant(board, this.moveVariants, toX + 1, toY);
-        addVariant(board, this.moveVariants, toX -1, toY - 1);
-        addVariant(board, this.moveVariants, toX, toY - 1);
-        addVariant(board, this.moveVariants, toX + 1, toY - 1);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX - 1, fromY + 1);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX, fromY + 1);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX + 1, fromY + 1);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX - 1, fromY);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX + 1, fromY);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX -1, fromY - 1);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX, fromY - 1);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX + 1, fromY - 1);
 
-        return this.moveVariants;
+        return variants;
     }
 
 }

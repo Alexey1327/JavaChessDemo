@@ -1,6 +1,5 @@
 package ru.chess;
 
-
 public enum MoveResult {
     MOVE,   // обычный ход
     EAT,  // фигура съедена

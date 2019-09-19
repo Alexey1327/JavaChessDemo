@@ -1,63 +1,55 @@
 package ru.chess;
 
-class PieceBishop extends AbstractPiece implements PieceInterface {
+class PieceBishop extends AbstractPiece implements Piece {
 
-    private final char symbol = 'B';
-
-    public PieceBishop(int x, int y, PieceColor color) {
+    PieceBishop(int x, int y, PieceColor color) {
         super(x, y, color);
+        this.name = "Bishop";
     }
-
-    @Override
-    public Character getSymbol() {
-        if (this.getColor() == PieceColor.WHITE) {
-            return this.symbol;
-        } else {
-            return Character.toLowerCase(this.symbol);
-        }
-    }
-
 
     @Override
     public MoveVariants getMoveVariants(ChessBoard board) {
 
-        int toX, toY;
+        MoveVariants variants = new MoveVariants();
+        addBishopMoveVariants(board, variants, this.getX(), this.getY());
 
-        this.moveVariants.clear();
-
-        toX = this.getX();
-        toY = this.getY();
-        while (addVariant(board, this.moveVariants, --toX, ++toY)) {
-            if (!board.isFreeCell(toX, toY)) {
-                break;
-            }
-        }
-
-        toX = this.getX();
-        toY = this.getY();
-        while (addVariant(board, this.moveVariants, ++toX, ++toY)) {
-            if (!board.isFreeCell(toX, toY)) {
-                break;
-            }
-        }
-
-        toX = this.getX();
-        toY = this.getY();
-        while (addVariant(board, this.moveVariants, ++toX, --toY)) {
-            if (!board.isFreeCell(toX, toY)) {
-                break;
-            }
-        }
-
-        toX = this.getX();
-        toY = this.getY();
-        while (addVariant(board, this.moveVariants, --toX, --toY)) {
-            if (!board.isFreeCell(toX, toY)) {
-                break;
-            }
-        }
-
-        return this.moveVariants;
+        return variants;
     }
+    
+    static void addBishopMoveVariants(ChessBoard board, MoveVariants variants, int fromX, int fromY) {
 
+        int toX = fromX;
+        int toY = fromY;
+
+        while (ChessBoard.addMoveVariant(board, variants, fromX, fromY, --toX, ++toY)) {
+            if (!board.isFreeCell(toX, toY)) {
+                break;
+            }
+        }
+
+        toX = fromX;
+        toY = fromY;
+        while (ChessBoard.addMoveVariant(board, variants, fromX, fromY, ++toX, ++toY)) {
+            if (!board.isFreeCell(toX, toY)) {
+                break;
+            }
+        }
+
+        toX = fromX;
+        toY = fromY;
+        while (ChessBoard.addMoveVariant(board, variants, fromX, fromY, ++toX, --toY)) {
+            if (!board.isFreeCell(toX, toY)) {
+                break;
+            }
+        }
+
+        toX = fromX;
+        toY = fromY;
+        while (ChessBoard.addMoveVariant(board, variants, fromX, fromY, --toX, --toY)) {
+            if (!board.isFreeCell(toX, toY)) {
+                break;
+            }
+        }
+    }
+    
 }

@@ -1,13 +1,13 @@
 package ru.chess;
 
-class ChessBoard {
+public class ChessBoard {
 
-    public AbstractPiece[][] field;
+    AbstractPiece[][] field;
 
     private AbstractPiece[] whitePieces;
     private AbstractPiece[] blackPieces;
 
-    public int moveCounter = 1;
+    private int moveCounter = 1;
 
     public ChessBoard() {
         this.field = new AbstractPiece[8][8];
@@ -15,7 +15,19 @@ class ChessBoard {
         this.whitePieces = new AbstractPiece[16];
     }
 
-    public char getPieceSymbolByCoords(int x, int y) {
+    int getMoveCounter() {
+        return moveCounter;
+    }
+
+    boolean isFirstMove() {
+        return moveCounter == 1;
+    }
+
+    void moveCounterInc() {
+        moveCounter++;
+    }
+
+    private char getPieceSymbolByCoords(int x, int y) {
         if (field[x][y] != null) {
             return field[x][y].getSymbol();
         } else {
@@ -23,7 +35,7 @@ class ChessBoard {
         }
     }
 
-    public AbstractPiece[] getPlayerPieces() {
+    AbstractPiece[] getPlayerPieces() {
         if (this.moveCounter % 2 == 0) {
             return blackPieces;
         } else {
@@ -80,24 +92,58 @@ class ChessBoard {
         return result.toString();
     }
 
-    public boolean isFreeCell(int x, int y) {
+    boolean isFreeCell(int x, int y) {
         return isCellValid(x,y) && field[x][y] == null || isCellValid(x,y) && field[x][y] != null && !field[x][y].isAlive();
     }
 
-    public AbstractPiece getCell(int x, int y) {
+    private AbstractPiece getCell(int x, int y) {
         return field[x][y];
     }
 
-    public boolean isCellValid(int x, int y) {
+    private boolean isCellValid(int x, int y) {
         return x >= 0 && x <=7 && y >=0 && y <= 7;
     }
 
-    public ChessBoard initBoard() {
-        this.initPieces();
-        this.placePieces();
-
-        return this;
+    static String getChessCoords(int x, int y) {
+        return Character.toString('A'+x) + Character.toString('1'+y);
     }
 
+    /**
+     * return true if move is valid and added
+     */
+    static boolean addMoveVariant(ChessBoard board, MoveVariants variants, int fromX, int fromY, int toX, int toY) {
 
+        AbstractPiece destinationPiece, startPiece;
+        MoveVariant variant;
+
+        if (board.isFreeCell(fromX,fromY)) {
+            throw new GameException("Wrong move! Start coords has no alive piece!" + ChessBoard.getChessCoords(fromX, fromY));
+        }
+
+        if (!board.isCellValid(toX,toY)) {
+            return false;
+        }
+
+        startPiece =  board.getCell(fromX, fromY);
+
+        destinationPiece = board.getCell(toX, toY);
+        if (destinationPiece != null) {
+            if (destinationPiece.getColor() != startPiece.getColor()) {
+                variant = new MoveVariant(fromX, fromY, toX, toY, MoveVariant.getEatWeight(destinationPiece), MoveResult.EAT, startPiece.getPieceName());
+                variants.add(variant);
+            } else {
+                return false;
+            }
+        } else {
+            variant = new MoveVariant(fromX, fromY, toX, toY, MoveVariant.getRegularMoveWeight(), MoveResult.MOVE, startPiece.getPieceName());
+            variants.add(variant);
+        }
+
+        return true;
+    }
+
+    void initBoard() {
+        this.initPieces();
+        this.placePieces();
+    }
 }

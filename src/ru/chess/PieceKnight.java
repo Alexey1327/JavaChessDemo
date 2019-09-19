@@ -1,41 +1,39 @@
 package ru.chess;
 
-class PieceKnight extends AbstractPiece implements PieceInterface {
+class PieceKnight extends AbstractPiece implements Piece {
 
-    private final char symbol = 'N';
-
-
-    public PieceKnight(int x, int y, PieceColor color) {
+    PieceKnight(int x, int y, PieceColor color) {
         super(x, y, color);
+        this.name = "Knight";
     }
 
     @Override
     public Character getSymbol() {
         if (this.getColor() == PieceColor.WHITE) {
-            return this.symbol;
+            return Character.toUpperCase(name.charAt(1));
         } else {
-            return Character.toLowerCase(this.symbol);
+            return name.charAt(1);
         }
     }
 
     @Override
     public MoveVariants getMoveVariants(ChessBoard board) {
 
-        int toX = this.getX(),
-            toY = this.getY();
+        int fromX = this.getX(),
+            fromY = this.getY();
 
-        this.moveVariants.clear();
+        MoveVariants variants = new MoveVariants();
 
-        addVariant(board, this.moveVariants, toX - 1, toY + 2);
-        addVariant(board, this.moveVariants, toX + 1, toY + 2);
-        addVariant(board, this.moveVariants, toX - 2, toY + 1);
-        addVariant(board, this.moveVariants, toX + 2, toY + 1);
-        addVariant(board, this.moveVariants, toX - 2, toY - 1);
-        addVariant(board, this.moveVariants, toX + 2, toY - 1);
-        addVariant(board, this.moveVariants, toX - 1, toY - 2);
-        addVariant(board, this.moveVariants, toX + 1, toY - 2);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX - 1, fromY + 2);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX + 1, fromY + 2);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX - 2, fromY + 1);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX + 2, fromY + 1);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX - 2, fromY - 1);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX + 2, fromY - 1);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX - 1, fromY - 2);
+        ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX + 1, fromY - 2);
 
-        return this.moveVariants;
+        return variants;
     }
 
 

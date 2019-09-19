@@ -2,7 +2,7 @@ package ru.chess;
 
 public class Game {
 
-    public static int rnd(int min, int max)
+    private static int rnd(int min, int max)
     {
         max -= min;
         return (int) (Math.random() * ++max) + min;
@@ -29,7 +29,7 @@ public class Game {
 
         if (variants.size() > 0) {
             MoveVariant variant = variants.get(0);
-            if (variant.getResultWeight() == MoveVariant.EAT_KING_WEIGHT) {
+            if (variant.isDeadKingVariant()) {
                 throw new GameException("GameOver! Player WINS! King will was killed by move " + variant.toStringShort());
             }
             if (variant.getResultWeight() > 0) {
@@ -44,13 +44,13 @@ public class Game {
 
     private static void printStat(ChessBoard board) {
         System.out.println(board);
-        System.out.println("Moves: " + board.moveCounter);
+        System.out.println("Moves: " + board.getMoveCounter());
     }
 
-    // TODO доделать выбор фигуры
-    public static void movePiece(ChessBoard board, MoveVariant variant) {
+    // TODO доделать выбор фигуры при замене пешки
+    private static void movePiece(ChessBoard board, MoveVariant variant) {
 
-        System.out.println(Integer.toString(board.moveCounter) + " " + variant);
+        System.out.println(board.getMoveCounter() + " " + variant);
 
         AbstractPiece piece1 = board.field[variant.getFromX()][variant.getFromY()];
         AbstractPiece piece2 = board.field[variant.getToX()][variant.getToY()];
@@ -69,19 +69,19 @@ public class Game {
                 break;
             case CHANGE:
                 piece1.setAlive(false);
-                // TODO выбор фигуры
+                // TODO выбор фигуры при замене пешки
                 break;
             case EAT_AND_CHANGE:
                 piece1.setAlive(false);
                 piece2.setAlive(false);
-                // TODO выбор фигуры
+                // TODO выбор фигуры при замене пешки
                 break;
         }
 
-        board.moveCounter++;
+        board.moveCounterInc();
     }
 
-    public static void main(String[] args) {
+    public static void playGame() {
 
         ChessBoard board = new ChessBoard();
         board.initBoard();
@@ -94,7 +94,7 @@ public class Game {
                 break;
             }
             System.out.println(board);
-            if (board.moveCounter > 500) {
+            if (board.getMoveCounter() > 500) {
                 System.out.println("Nobody wins...");
                 break;
             }

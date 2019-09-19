@@ -1,4 +1,4 @@
-package ru.chess;
+package ru.lanit.chess;
 
 public class GameException extends RuntimeException {
     public GameException(String message) {

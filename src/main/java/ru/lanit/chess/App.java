@@ -1,6 +1,6 @@
-import ru.chess.Game;
+package ru.lanit.chess;
 
-public class Chess {
+public class App {
 
     public static void main(String[] args) {
         Game.playGame();

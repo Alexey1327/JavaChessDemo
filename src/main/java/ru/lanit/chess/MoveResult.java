@@ -1,4 +1,4 @@
-package ru.chess;
+package ru.lanit.chess;
 
 public enum MoveResult {
     MOVE,   // обычный ход

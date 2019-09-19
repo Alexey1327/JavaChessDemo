@@ -1,4 +1,4 @@
-package ru.chess;
+package ru.lanit.chess;
 
 class PiecePawn extends AbstractPiece implements Piece {
 

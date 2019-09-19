@@ -1,4 +1,4 @@
-package ru.chess;
+package ru.lanit.chess;
 
 public abstract class AbstractPiece implements Piece {
 

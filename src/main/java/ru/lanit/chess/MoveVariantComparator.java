@@ -1,4 +1,4 @@
-package ru.chess;
+package ru.lanit.chess;
 
 import java.util.Comparator;
 

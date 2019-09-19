@@ -102,12 +102,6 @@ class Game {
         }
     }
 
-    private static void printStat(ChessBoard board) {
-        System.out.println(board);
-        System.out.println("Moves: " + board.getMoveCounter());
-    }
-
-    // TODO доделать выбор фигуры при замене пешки
     private static void movePiece(MoveVariant variant) {
 
         System.out.println(board.getMoveCounter() + " " + variant);
@@ -121,21 +115,22 @@ class Game {
         piece1.setY(variant.getToY());
         board.field[variant.getToX()][variant.getToY()] = piece1;
 
-        switch (variant.getMoveResult()) {
-            case MOVE:
-                break;
-            case EAT:
-                piece2.setAlive(false);
-                break;
-            case CHANGE:
-                piece1.setAlive(false);
-                // TODO выбор фигуры при замене пешки
-                break;
-            case EAT_AND_CHANGE:
-                piece1.setAlive(false);
-                piece2.setAlive(false);
-                // TODO выбор фигуры при замене пешки
-                break;
+        if (piece2 != null) {
+            piece2.setAlive(false);
+        }
+
+        if (piece1 instanceof PiecePawn && (variant.getToY() == 0 || variant.getToY() == 7)) {
+            piece1.setAlive(false);
+            for (AbstractPiece deadPiece : board.getCurrentPlayerPieces()) {
+                if (!deadPiece.isAlive() && !(deadPiece instanceof PiecePawn)) {
+                    board.field[variant.getToX()][variant.getToY()] = deadPiece;
+                    deadPiece.setX(variant.getToX());
+                    deadPiece.setY(variant.getToY());
+                    deadPiece.setAlive(true);
+                    System.out.println("It's alive!!! New Piece - " + deadPiece.getPieceName());
+                    break;
+                }
+            }
         }
 
         board.moveCounterInc();
@@ -159,6 +154,5 @@ class Game {
                 break;
             }
         }
-        printStat(board);
     }
 }

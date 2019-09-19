@@ -35,11 +35,27 @@ public class ChessBoard {
         }
     }
 
-    AbstractPiece[] getPlayerPieces() {
-        if (this.moveCounter % 2 == 0) {
+    AbstractPiece[] getCurrentPlayerPieces() {
+        if (getCurrentPlayerColor() == PieceColor.WHITE) {
+            return whitePieces;
+        } else {
+            return blackPieces;
+        }
+    }
+
+    AbstractPiece[] getOpponentPlayerPieces() {
+        if (getCurrentPlayerColor() == PieceColor.WHITE) {
             return blackPieces;
         } else {
             return whitePieces;
+        }
+    }
+
+    private PieceColor getCurrentPlayerColor() {
+        if (this.moveCounter % 2 != 0) {
+            return PieceColor.WHITE;
+        } else {
+            return PieceColor.BLACK;
         }
     }
 
@@ -129,7 +145,7 @@ public class ChessBoard {
         destinationPiece = board.getCell(toX, toY);
         if (destinationPiece != null) {
             if (destinationPiece.getColor() != startPiece.getColor()) {
-                variant = new MoveVariant(fromX, fromY, toX, toY, MoveVariant.getEatWeight(destinationPiece), MoveResult.EAT, startPiece.getPieceName());
+                variant = new MoveVariant(fromX, fromY, toX, toY, MoveVariant.calculateWeight(destinationPiece), MoveResult.EAT, startPiece.getPieceName());
                 variants.add(variant);
             } else {
                 return false;

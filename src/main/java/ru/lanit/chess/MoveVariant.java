@@ -8,7 +8,7 @@ public class MoveVariant {
     private static final byte EAT_BISHOP_WEIGHT = 3;
     private static final byte EAT_ROOK_WEIGHT = 4;
     private static final byte EAT_QUEEN_WEIGHT = 5;
-    // private static final byte CHANGE_PIECE_WEIGHT = 6; TODO доделать
+    private static final byte CHANGE_PIECE_WEIGHT = 6;
     private static final byte EAT_KING_WEIGHT = 7;
 
     private int fromX, fromY, toX, toY, resultWeight;
@@ -31,6 +31,10 @@ public class MoveVariant {
         this.pieceName = pieceName;
     }
 
+    public void setMoveResult(MoveResult moveResult) {
+        this.moveResult = moveResult;
+    }
+
     static byte getRegularMoveWeight() {
         return REGULAR_MOVE_WEIGHT;
     }
@@ -39,7 +43,7 @@ public class MoveVariant {
         return this.resultWeight == EAT_KING_WEIGHT;
     }
 
-    static byte getEatWeight(AbstractPiece piece) {
+    static byte calculateWeight(AbstractPiece piece) {
         if (piece instanceof PiecePawn) {
             return EAT_PAWN_WEIGHT;
         }
@@ -64,7 +68,7 @@ public class MoveVariant {
 
     @Override
     public String toString() {
-        return "MoveVariant{ " + pieceName + " " +
+        return "MoveVariant{" + pieceName + " " +
                 this.toStringShort() +
                 ", resultWeight=" + resultWeight +
                 ", moveResult=" + moveResult +

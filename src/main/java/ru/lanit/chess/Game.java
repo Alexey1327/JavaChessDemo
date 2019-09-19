@@ -1,6 +1,10 @@
 package ru.lanit.chess;
 
-public class Game {
+class Game {
+
+    private final static int moveLimit = 1000;
+
+    private static ChessBoard board;
 
     private static int rnd(int min, int max)
     {
@@ -8,10 +12,10 @@ public class Game {
         return (int) (Math.random() * ++max) + min;
     }
 
-    private static MoveVariants getAllPlayerMoves(ChessBoard board) {
+    private static MoveVariants getAllPlayerMoves() {
         MoveVariants variants = new MoveVariants();
 
-        for (AbstractPiece piece: board.getPlayerPieces()) {
+        for (AbstractPiece piece: board.getCurrentPlayerPieces()) {
             if (piece.isAlive()) {
                 variants.addAll(piece.getMoveVariants(board));
             }
@@ -21,11 +25,67 @@ public class Game {
         return variants;
     }
 
-    private static MoveVariant getBestPlayerMove(ChessBoard board) {
+    private static void updateCheckMateVariants(MoveVariants variants) {
+        MoveVariants opponentVariants;
+        AbstractPiece piece1, piece2;
 
-        MoveVariants variants = getAllPlayerMoves(board);
+        for (MoveVariant variant : variants) {
+            // делаем ход
+            piece1 = board.field[variant.getFromX()][variant.getFromY()];
+            piece2 = board.field[variant.getToX()][variant.getToY()];
 
-        System.out.println(variants);
+            piece1.setX(variant.getToX());
+            piece1.setY(variant.getToY());
+            board.field[variant.getFromX()][variant.getFromY()] = null;
+            board.field[variant.getToX()][variant.getToY()] = piece1;
+            if (piece2 != null) {
+                piece2.setAlive(false);
+            }
+
+            opponentVariants = getOpponentCheckMateVariants();
+            if (opponentVariants.size() > 0) {
+                System.out.println("King can die from " + opponentVariants.get(0));
+                variant.setMoveResult(MoveResult.CHECK_MATE);
+            }
+            opponentVariants.clear();
+
+            // откатываем ход
+            piece1.setX(variant.getFromX());
+            piece1.setY(variant.getFromY());
+            board.field[variant.getFromX()][variant.getFromY()] = piece1;
+            board.field[variant.getToX()][variant.getToY()] = piece2;
+            if (piece2 != null) {
+                piece2.setAlive(true);
+            }
+        }
+    }
+
+    private static MoveVariants getOpponentCheckMateVariants() {
+
+        MoveVariants moveVariants = new MoveVariants();
+
+        for (AbstractPiece piece : board.getOpponentPlayerPieces()) {
+            if (piece.isAlive()) {
+                moveVariants.addAll(piece.getMoveVariants(board));
+            }
+        }
+        moveVariants.removeIf(variant -> !variant.isDeadKingVariant());
+
+        return moveVariants;
+    }
+
+    private static MoveVariant getBestPlayerMove() {
+
+        MoveVariants opponentVariants = getOpponentCheckMateVariants();
+
+        if (opponentVariants.size() > 0) {
+            System.out.println("Opposite player have Check! " + opponentVariants.get(0));
+        }
+
+        MoveVariants variants = getAllPlayerMoves();
+        updateCheckMateVariants(variants);
+        System.out.println("Possible variants: " + variants);
+        variants.removeIf(variant -> variant.getMoveResult() == MoveResult.CHECK_MATE);
 
         if (variants.size() > 0) {
             MoveVariant variant = variants.get(0);
@@ -38,7 +98,7 @@ public class Game {
                 return variants.get(rnd(0,variants.size()-1));
             }
         } else {
-            throw new GameException("Game Over! Player has no possible moves!");
+            throw new GameException("Game Over! MAT!!!");
         }
     }
 
@@ -48,7 +108,7 @@ public class Game {
     }
 
     // TODO доделать выбор фигуры при замене пешки
-    private static void movePiece(ChessBoard board, MoveVariant variant) {
+    private static void movePiece(MoveVariant variant) {
 
         System.out.println(board.getMoveCounter() + " " + variant);
 
@@ -81,21 +141,21 @@ public class Game {
         board.moveCounterInc();
     }
 
-    public static void playGame() {
+    static void playGame() {
 
-        ChessBoard board = new ChessBoard();
+        board = new ChessBoard();
         board.initBoard();
 
         while (true) {
             try {
-                movePiece(board, getBestPlayerMove(board));
+                movePiece(getBestPlayerMove());
             } catch (GameException e){
                 System.out.println(e.getMessage());
                 break;
             }
             System.out.println(board);
-            if (board.getMoveCounter() > 500) {
-                System.out.println("Nobody wins...");
+            if (board.getMoveCounter() == moveLimit) {
+                System.out.println("Nobody wins... " + moveLimit + " moves limit exceeded");
                 break;
             }
         }

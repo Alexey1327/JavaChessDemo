@@ -5,4 +5,5 @@ public enum MoveResult {
     EAT,  // фигура съедена
     CHANGE, // замена фигуры (для пешки)
     EAT_AND_CHANGE, // замена фигуры (для пешки)
+    CHECK_MATE // ход ставит короля под удар
 }

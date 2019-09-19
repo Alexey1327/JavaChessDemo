@@ -45,7 +45,7 @@ class Game {
             opponentVariants = getOpponentCheckMateVariants();
             if (opponentVariants.size() > 0) {
                 System.out.println("King can die from " + opponentVariants.get(0));
-                variant.setMoveResult(MoveResult.CHECK_MATE);
+                variant.setCheckMateResult();
             }
             opponentVariants.clear();
 

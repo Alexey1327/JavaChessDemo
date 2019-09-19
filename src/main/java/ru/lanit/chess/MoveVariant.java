@@ -9,7 +9,8 @@ public class MoveVariant {
     private static final byte EAT_ROOK_WEIGHT = 4;
     private static final byte EAT_QUEEN_WEIGHT = 5;
     private static final byte CHANGE_PIECE_WEIGHT = 6;
-    private static final byte EAT_KING_WEIGHT = 7;
+    private static final byte EAT_AND_CHANGE_WEIGHT = 7;
+    private static final byte EAT_KING_WEIGHT = 8;
 
     private int fromX, fromY, toX, toY, resultWeight;
 
@@ -31,11 +32,16 @@ public class MoveVariant {
         this.pieceName = pieceName;
     }
 
-    public void setMoveResult(MoveResult moveResult) {
-        this.moveResult = moveResult;
+    void setCheckMateResult() {
+        this.moveResult = MoveResult.CHECK_MATE;
     }
 
-    static byte getRegularMoveWeight() {
+    static byte calculateDestinationMoveWeight(AbstractPiece piece) {
+        if (piece instanceof PiecePawn) {
+            if (piece.getY() == 6 && piece.getColor() == PieceColor.WHITE || piece.getY() == 1 && piece.getColor() == PieceColor.BLACK) {
+                return CHANGE_PIECE_WEIGHT;
+            }
+        }
         return REGULAR_MOVE_WEIGHT;
     }
 
@@ -43,8 +49,12 @@ public class MoveVariant {
         return this.resultWeight == EAT_KING_WEIGHT;
     }
 
+
     static byte calculateWeight(AbstractPiece piece) {
         if (piece instanceof PiecePawn) {
+            if (piece.getY() == 7 || piece.getY() == 0) {
+                return CHANGE_PIECE_WEIGHT;
+            }
             return EAT_PAWN_WEIGHT;
         }
         if (piece instanceof PieceKnight) {

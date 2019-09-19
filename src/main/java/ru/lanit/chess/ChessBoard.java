@@ -129,8 +129,9 @@ public class ChessBoard {
      */
     static boolean addMoveVariant(ChessBoard board, MoveVariants variants, int fromX, int fromY, int toX, int toY) {
 
-        AbstractPiece destinationPiece, startPiece;
+        AbstractPiece piece1, piece2;
         MoveVariant variant;
+        MoveResult moveResult;
 
         if (board.isFreeCell(fromX,fromY)) {
             throw new GameException("Wrong move! Start coords has no alive piece!" + ChessBoard.getChessCoords(fromX, fromY));
@@ -140,18 +141,22 @@ public class ChessBoard {
             return false;
         }
 
-        startPiece =  board.getCell(fromX, fromY);
+        piece1 =  board.getCell(fromX, fromY);
+        piece2 = board.getCell(toX, toY);
+        if (piece2 != null) {
+            if (piece2.getColor() != piece1.getColor()) {
+                moveResult = MoveResult.EAT;
+                if (piece1 instanceof PiecePawn && (toY == 7 || toY == 0)) {
+                    moveResult = MoveResult.EAT_AND_CHANGE;
+                }
 
-        destinationPiece = board.getCell(toX, toY);
-        if (destinationPiece != null) {
-            if (destinationPiece.getColor() != startPiece.getColor()) {
-                variant = new MoveVariant(fromX, fromY, toX, toY, MoveVariant.calculateWeight(destinationPiece), MoveResult.EAT, startPiece.getPieceName());
+                variant = new MoveVariant(fromX, fromY, toX, toY, MoveVariant.calculateWeight(piece2), moveResult, piece1.getPieceName());
                 variants.add(variant);
             } else {
                 return false;
             }
         } else {
-            variant = new MoveVariant(fromX, fromY, toX, toY, MoveVariant.getRegularMoveWeight(), MoveResult.MOVE, startPiece.getPieceName());
+            variant = new MoveVariant(fromX, fromY, toX, toY, MoveVariant.calculateDestinationMoveWeight(piece1), MoveResult.MOVE, piece1.getPieceName());
             variants.add(variant);
         }
 

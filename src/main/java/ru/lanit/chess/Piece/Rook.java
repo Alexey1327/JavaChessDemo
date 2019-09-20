@@ -1,10 +1,19 @@
-package ru.lanit.chess;
+package ru.lanit.chess.Piece;
 
-class PieceRook extends AbstractPiece implements Piece {
+import ru.lanit.chess.AbstractPiece;
+import ru.lanit.chess.ChessBoard;
+import ru.lanit.chess.MoveVariants;
 
-    PieceRook(int x, int y, PieceColor color) {
+public class Rook extends AbstractPiece implements Piece {
+
+    public Rook(int x, int y, Color color) {
         super(x, y, color);
-        this.name = "Rook";
+        super.setName("Rook");
+    }
+
+    @Override
+    public Character getSymbol() {
+        return this.getColor() == Color.WHITE ? '♖' : '♜';
     }
 
     @Override

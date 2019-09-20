@@ -2,7 +2,7 @@ package ru.lanit.chess;
 
 import java.util.ArrayList;
 
-class MoveVariants extends ArrayList<MoveVariant> {
+public class MoveVariants extends ArrayList<MoveVariant> {
 
     @Override
     public String toString() {

@@ -1,23 +1,36 @@
 package ru.lanit.chess;
 
+import ru.lanit.chess.Piece.Piece;
+import ru.lanit.chess.Piece.Color;
+
 public abstract class AbstractPiece implements Piece {
 
     private int x, y;
 
-    private PieceColor color;
+    private Color color;
 
     private boolean alive = true;
 
-    String name;
+    private String name;
 
-    public AbstractPiece(int x, int y, PieceColor color) {
+    public AbstractPiece(int x, int y, Color color) {
         this.x = x;
         this.y = y;
         this.color = color;
     }
 
-    public Character getSymbol() {
-        if (this.getColor() == PieceColor.WHITE) {
+    public String getName() {
+        return name;
+    }
+
+    protected void setName(String name) {
+        this.name = name;
+    }
+
+    public abstract Character getSymbol();
+
+    public Character getTextSymbol() {
+        if (this.getColor() == Color.WHITE) {
             return name.charAt(0);
         } else {
             return Character.toLowerCase(name.charAt(0));
@@ -26,9 +39,8 @@ public abstract class AbstractPiece implements Piece {
 
     public abstract MoveVariants getMoveVariants(ChessBoard board);
 
-    @Override
     public String getPieceName() {
-        if (color == PieceColor.WHITE) {
+        if (color == Color.WHITE) {
             return "White " + name;
         } else {
             return "Black " + name;
@@ -43,7 +55,7 @@ public abstract class AbstractPiece implements Piece {
         this.alive = alive;
     }
 
-    int getX() {
+    protected int getX() {
         return x;
     }
 
@@ -51,7 +63,7 @@ public abstract class AbstractPiece implements Piece {
         this.x = x;
     }
 
-    int getY() {
+    protected int getY() {
         return y;
     }
 
@@ -59,7 +71,7 @@ public abstract class AbstractPiece implements Piece {
         this.y = y;
     }
 
-    PieceColor getColor() {
+    protected Color getColor() {
         return color;
     }
 

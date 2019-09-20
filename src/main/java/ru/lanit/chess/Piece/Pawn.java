@@ -1,10 +1,19 @@
-package ru.lanit.chess;
+package ru.lanit.chess.Piece;
 
-class PiecePawn extends AbstractPiece implements Piece {
+import ru.lanit.chess.AbstractPiece;
+import ru.lanit.chess.ChessBoard;
+import ru.lanit.chess.MoveVariants;
 
-    PiecePawn(int x, int y, PieceColor color) {
+public class Pawn extends AbstractPiece implements Piece {
+
+    public Pawn(int x, int y, Color color) {
         super(x, y, color);
-        this.name = "Pawn";
+        this.setName("Pawn");
+    }
+
+    @Override
+    public Character getSymbol() {
+        return this.getColor() == Color.WHITE ? '♙' : '♟';
     }
 
     @Override
@@ -19,7 +28,7 @@ class PiecePawn extends AbstractPiece implements Piece {
             ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX, fromY + 2);
         }
 
-        if (this.getColor() == PieceColor.WHITE) {
+        if (this.getColor() == Color.WHITE) {
             addPawnEatVariants(board, variants, fromX, fromY, fromX, fromY + 1);
         } else {
             addPawnEatVariants(board, variants, fromX, fromY, fromX, fromY - 1);

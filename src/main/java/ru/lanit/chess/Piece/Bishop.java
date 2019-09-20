@@ -1,10 +1,19 @@
-package ru.lanit.chess;
+package ru.lanit.chess.Piece;
 
-class PieceBishop extends AbstractPiece implements Piece {
+import ru.lanit.chess.AbstractPiece;
+import ru.lanit.chess.ChessBoard;
+import ru.lanit.chess.MoveVariants;
 
-    PieceBishop(int x, int y, PieceColor color) {
+public class Bishop extends AbstractPiece implements Piece {
+
+    public Bishop(int x, int y, Color color) {
         super(x, y, color);
-        this.name = "Bishop";
+        this.setName("Bishop");
+    }
+
+    @Override
+    public Character getSymbol() {
+        return this.getColor() == Color.WHITE ? '♗' : '♝';
     }
 
     @Override

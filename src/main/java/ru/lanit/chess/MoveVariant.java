@@ -1,5 +1,7 @@
 package ru.lanit.chess;
 
+import ru.lanit.chess.Piece.*;
+
 public class MoveVariant {
 
     private static final byte REGULAR_MOVE_WEIGHT = 0;
@@ -37,8 +39,8 @@ public class MoveVariant {
     }
 
     static byte calculateDestinationMoveWeight(AbstractPiece piece) {
-        if (piece instanceof PiecePawn) {
-            if (piece.getY() == 6 && piece.getColor() == PieceColor.WHITE || piece.getY() == 1 && piece.getColor() == PieceColor.BLACK) {
+        if (piece instanceof Pawn) {
+            if (piece.getY() == 6 && piece.getColor() == Color.WHITE || piece.getY() == 1 && piece.getColor() == Color.BLACK) {
                 return PROMOTION_PAWN_WEIGHT;
             }
         }
@@ -51,27 +53,27 @@ public class MoveVariant {
 
 
     static byte calculateEatWeight(AbstractPiece piece1, AbstractPiece piece2) {
-        if (piece1 instanceof PiecePawn) {
+        if (piece1 instanceof Pawn) {
             if (piece2.getY() == 7 || piece2.getY() == 0) {
                 return PROMOTION_EAT_PAWN_WEIGHT;
             }
         }
-        if (piece2 instanceof PieceKnight) {
+        if (piece2 instanceof Knight) {
             return EAT_KNIGHT_WEIGHT;
         }
-        if (piece2 instanceof PieceBishop) {
+        if (piece2 instanceof Bishop) {
             return EAT_BISHOP_WEIGHT;
         }
-        if (piece2 instanceof PieceRook) {
+        if (piece2 instanceof Rook) {
             return EAT_ROOK_WEIGHT;
         }
-        if (piece2 instanceof PieceQueen) {
+        if (piece2 instanceof Queen) {
             return EAT_QUEEN_WEIGHT;
         }
-        if (piece2 instanceof PieceKing) {
+        if (piece2 instanceof King) {
             return EAT_KING_WEIGHT;
         }
-        if (piece2 instanceof PiecePawn) {
+        if (piece2 instanceof Pawn) {
             return EAT_PAWN_WEIGHT;
         }
 
@@ -82,25 +84,25 @@ public class MoveVariant {
     static AbstractPiece getBestPieceForChange(AbstractPiece[] playerPieces) {
         // priority Queen, Rook, Bishop, Knight
         for (AbstractPiece deadPiece : playerPieces) {
-            if (!deadPiece.isAlive() && deadPiece instanceof PieceQueen) {
+            if (!deadPiece.isAlive() && deadPiece instanceof Queen) {
                 return deadPiece;
             }
         }
 
         for (AbstractPiece deadPiece : playerPieces) {
-            if (!deadPiece.isAlive() && deadPiece instanceof PieceRook) {
+            if (!deadPiece.isAlive() && deadPiece instanceof Rook) {
                 return deadPiece;
             }
         }
 
         for (AbstractPiece deadPiece : playerPieces) {
-            if (!deadPiece.isAlive() && deadPiece instanceof PieceBishop) {
+            if (!deadPiece.isAlive() && deadPiece instanceof Bishop) {
                 return deadPiece;
             }
         }
 
         for (AbstractPiece deadPiece : playerPieces) {
-            if (!deadPiece.isAlive() && deadPiece instanceof PieceKnight) {
+            if (!deadPiece.isAlive() && deadPiece instanceof Knight) {
                 return deadPiece;
             }
         }

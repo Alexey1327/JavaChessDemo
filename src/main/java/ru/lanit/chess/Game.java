@@ -1,5 +1,7 @@
 package ru.lanit.chess;
 
+import ru.lanit.chess.Piece.Pawn;
+
 class Game {
 
     private final static int moveLimitForDraw = 100;
@@ -92,7 +94,7 @@ class Game {
                 return variants.get((int)(Math.random() * variants.size()));
             }
         } else {
-            throw new GameException("Game Over! MAT! " + board.getOpponentPlayerColor() + " player win on " + board.getMoveCounter() + " moves!");
+            throw new GameException("Game Over! MAT! " + board.getOpponentPlayerColor() + " player win on " + (board.getMoveCounter()-1) + " moves!");
         }
     }
 
@@ -114,7 +116,7 @@ class Game {
         }
 
         // Pawn Change
-        if (piece1 instanceof PiecePawn && (variant.getToY() == 0 || variant.getToY() == 7)) {
+        if (piece1 instanceof Pawn && (variant.getToY() == 0 || variant.getToY() == 7)) {
             piece1.setAlive(false);
             AbstractPiece bestDeadPiece = MoveVariant.getBestPieceForChange(board.getCurrentPlayerPieces());
             board.field[variant.getToX()][variant.getToY()] = bestDeadPiece;
@@ -127,10 +129,13 @@ class Game {
         board.moveCounterInc();
     }
 
-    static void playGame() {
+    static void playGame(boolean printAsUTF8) {
+
+        ChessBoard.setPrintTypeAsUtf8(printAsUTF8);
 
         board = new ChessBoard();
         board.initBoard();
+        System.out.println(board);
 
         while (true) {
             try {

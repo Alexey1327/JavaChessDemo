@@ -6,12 +6,6 @@ class Game {
 
     private static ChessBoard board;
 
-    private static int rnd(int min, int max)
-    {
-        max -= min;
-        return (int) (Math.random() * ++max) + min;
-    }
-
     private static MoveVariants getAllPlayerMoves() {
         MoveVariants variants = new MoveVariants();
 
@@ -95,7 +89,7 @@ class Game {
             if (variant.getResultWeight() > 0) {
                 return variant;
             } else {
-                return variants.get(rnd(0,variants.size()-1));
+                return variants.get((int)(Math.random() * variants.size()));
             }
         } else {
             throw new GameException("Game Over! MAT! " + board.getOpponentPlayerColor() + " player win on " + board.getMoveCounter() + " moves!");
@@ -122,7 +116,7 @@ class Game {
         // Pawn Change
         if (piece1 instanceof PiecePawn && (variant.getToY() == 0 || variant.getToY() == 7)) {
             piece1.setAlive(false);
-            AbstractPiece bestDeadPiece = getBestPieceForChange();
+            AbstractPiece bestDeadPiece = MoveVariant.getBestPieceForChange(board.getCurrentPlayerPieces());
             board.field[variant.getToX()][variant.getToY()] = bestDeadPiece;
             bestDeadPiece.setX(piece1.getX());
             bestDeadPiece.setY(piece1.getY());
@@ -131,35 +125,6 @@ class Game {
         }
 
         board.moveCounterInc();
-    }
-
-    private static AbstractPiece getBestPieceForChange() {
-        // priority Queen, Rook, Bishop, Knight
-        for (AbstractPiece deadPiece : board.getCurrentPlayerPieces()) {
-            if (!deadPiece.isAlive() && deadPiece instanceof PieceQueen) {
-                return deadPiece;
-            }
-        }
-
-        for (AbstractPiece deadPiece : board.getCurrentPlayerPieces()) {
-            if (!deadPiece.isAlive() && deadPiece instanceof PieceRook) {
-                return deadPiece;
-            }
-        }
-
-        for (AbstractPiece deadPiece : board.getCurrentPlayerPieces()) {
-            if (!deadPiece.isAlive() && deadPiece instanceof PieceBishop) {
-                return deadPiece;
-            }
-        }
-
-        for (AbstractPiece deadPiece : board.getCurrentPlayerPieces()) {
-            if (!deadPiece.isAlive() && deadPiece instanceof PieceKnight) {
-                return deadPiece;
-            }
-        }
-
-        throw new GameException("Can't find dead Piece for change!");
     }
 
     static void playGame() {

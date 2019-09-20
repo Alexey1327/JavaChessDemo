@@ -1,12 +1,8 @@
 package ru.lanit.chess;
 
-public class GameException extends RuntimeException {
-    public GameException(String message) {
+class GameException extends RuntimeException {
+    GameException(String message) {
         super(message);
 
-    }
-
-    public GameException(String message, Throwable cause) {
-        super(message, cause);
     }
 }

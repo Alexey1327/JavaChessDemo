@@ -78,6 +78,37 @@ public class MoveVariant {
         throw new GameException("Error calculateEatWeight! " + piece1 + piece2);
     }
 
+
+    static AbstractPiece getBestPieceForChange(AbstractPiece[] playerPieces) {
+        // priority Queen, Rook, Bishop, Knight
+        for (AbstractPiece deadPiece : playerPieces) {
+            if (!deadPiece.isAlive() && deadPiece instanceof PieceQueen) {
+                return deadPiece;
+            }
+        }
+
+        for (AbstractPiece deadPiece : playerPieces) {
+            if (!deadPiece.isAlive() && deadPiece instanceof PieceRook) {
+                return deadPiece;
+            }
+        }
+
+        for (AbstractPiece deadPiece : playerPieces) {
+            if (!deadPiece.isAlive() && deadPiece instanceof PieceBishop) {
+                return deadPiece;
+            }
+        }
+
+        for (AbstractPiece deadPiece : playerPieces) {
+            if (!deadPiece.isAlive() && deadPiece instanceof PieceKnight) {
+                return deadPiece;
+            }
+        }
+
+        throw new GameException("Can't find dead Piece for change!");
+    }
+
+
     @Override
     public String toString() {
         return "MoveVariant{" + pieceName + " " +

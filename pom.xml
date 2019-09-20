@@ -17,6 +17,24 @@
     <maven.compiler.target>1.11</maven.compiler.target>
   </properties>
 
+  <profiles>
+    <profile>
+      <id>text</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <project.entrypoint>ru.lanit.chess.Main</project.entrypoint>
+      </properties>
+    </profile>
+    <profile>
+      <id>utf8</id>
+      <properties>
+        <project.entrypoint>ru.lanit.chess.MainUtf8</project.entrypoint>
+      </properties>
+    </profile>
+  </profiles>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>

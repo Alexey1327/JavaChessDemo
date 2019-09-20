@@ -59,6 +59,14 @@ public class ChessBoard {
         }
     }
 
+    PieceColor getOpponentPlayerColor() {
+        if (this.moveCounter % 2 == 0) {
+            return PieceColor.WHITE;
+        } else {
+            return PieceColor.BLACK;
+        }
+    }
+
     private void initPieces() {
         // расставим пешки
         for (int x = 0; x < 8 ; x++) {
@@ -145,18 +153,23 @@ public class ChessBoard {
         piece2 = board.getCell(toX, toY);
         if (piece2 != null) {
             if (piece2.getColor() != piece1.getColor()) {
-                moveResult = MoveResult.EAT;
                 if (piece1 instanceof PiecePawn && (toY == 7 || toY == 0)) {
                     moveResult = MoveResult.EAT_AND_CHANGE;
+                } else {
+                    moveResult = MoveResult.EAT;
                 }
-
                 variant = new MoveVariant(fromX, fromY, toX, toY, MoveVariant.calculateWeight(piece2), moveResult, piece1.getPieceName());
                 variants.add(variant);
             } else {
                 return false;
             }
         } else {
-            variant = new MoveVariant(fromX, fromY, toX, toY, MoveVariant.calculateDestinationMoveWeight(piece1), MoveResult.MOVE, piece1.getPieceName());
+            if (piece1 instanceof PiecePawn && (toY == 7 || toY == 0)) {
+                moveResult = MoveResult.CHANGE;
+            } else {
+                moveResult = MoveResult.MOVE;
+            }
+            variant = new MoveVariant(fromX, fromY, toX, toY, MoveVariant.calculateDestinationMoveWeight(piece1), moveResult, piece1.getPieceName());
             variants.add(variant);
         }
 

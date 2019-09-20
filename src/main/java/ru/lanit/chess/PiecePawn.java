@@ -29,7 +29,10 @@ class PiecePawn extends AbstractPiece implements Piece {
     }
 
     private static void addPawnEatVariants(ChessBoard board, MoveVariants variants, int fromX, int fromY, int toX, int toY) {
-        ChessBoard.addMoveVariant(board, variants, fromX, fromY, toX, toY);
+
+        if (board.isFreeCell(toX, toY)) {
+            ChessBoard.addMoveVariant(board, variants, fromX, fromY, toX, toY);
+        }
 
         if (!board.isFreeCell(toX - 1, toY)) {
             ChessBoard.addMoveVariant(board, variants, fromX, fromY, toX - 1, toY);

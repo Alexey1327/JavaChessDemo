@@ -132,6 +132,23 @@ public class ChessBoard {
         return Character.toString('A'+x) + Character.toString('1'+y);
     }
 
+    boolean checkDraw() {
+        int player1AliveCounter = 0, player2AliveCounter = 0;
+        for (AbstractPiece piece : this.getCurrentPlayerPieces()) {
+            if (piece.isAlive()) {
+                player1AliveCounter++;
+            }
+        }
+
+        for (AbstractPiece piece : this.getOpponentPlayerPieces()) {
+            if (piece.isAlive()) {
+                player2AliveCounter++;
+            }
+        }
+
+        return player1AliveCounter == 1 && player2AliveCounter == 1;
+    }
+
     /**
      * return true if move is valid and added
      */
@@ -154,18 +171,18 @@ public class ChessBoard {
         if (piece2 != null) {
             if (piece2.getColor() != piece1.getColor()) {
                 if (piece1 instanceof PiecePawn && (toY == 7 || toY == 0)) {
-                    moveResult = MoveResult.EAT_AND_CHANGE;
+                    moveResult = MoveResult.EAT_AND_PROMOTION;
                 } else {
                     moveResult = MoveResult.EAT;
                 }
-                variant = new MoveVariant(fromX, fromY, toX, toY, MoveVariant.calculateWeight(piece2), moveResult, piece1.getPieceName());
+                variant = new MoveVariant(fromX, fromY, toX, toY, MoveVariant.calculateEatWeight(piece1, piece2), moveResult, piece1.getPieceName());
                 variants.add(variant);
             } else {
                 return false;
             }
         } else {
             if (piece1 instanceof PiecePawn && (toY == 7 || toY == 0)) {
-                moveResult = MoveResult.CHANGE;
+                moveResult = MoveResult.PROMOTION;
             } else {
                 moveResult = MoveResult.MOVE;
             }

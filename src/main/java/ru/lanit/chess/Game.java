@@ -2,7 +2,7 @@ package ru.lanit.chess;
 
 class Game {
 
-    private final static int moveLimit = 1000;
+    private final static int moveLimitForDraw = 100;
 
     private static ChessBoard board;
 
@@ -175,9 +175,11 @@ class Game {
                 break;
             }
             System.out.println(board);
-            if (board.getMoveCounter() == moveLimit) {
-                System.out.println("Nobody wins... " + moveLimit + " moves limit exceeded");
-                break;
+            if (board.getMoveCounter() > moveLimitForDraw) {
+                if (board.checkDraw()) {
+                    System.out.println("Nobody wins! Draw, on " + board.getMoveCounter() + " moves.");
+                    break;
+                }
             }
         }
     }

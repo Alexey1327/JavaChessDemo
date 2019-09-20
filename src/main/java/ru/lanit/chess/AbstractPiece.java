@@ -62,4 +62,15 @@ public abstract class AbstractPiece implements Piece {
     PieceColor getColor() {
         return color;
     }
+
+    @Override
+    public String toString() {
+        return "AbstractPiece{" +
+                "x=" + x +
+                ", y=" + y +
+                ", color=" + color +
+                ", alive=" + alive +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

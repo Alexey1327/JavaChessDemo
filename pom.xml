@@ -24,13 +24,13 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <project.entrypoint>ru.lanit.chess.Main</project.entrypoint>
+        <project.entryPoint>ru.lanit.chess.Main</project.entryPoint>
       </properties>
     </profile>
     <profile>
       <id>utf8</id>
       <properties>
-        <project.entrypoint>ru.lanit.chess.MainUtf8</project.entrypoint>
+        <project.entryPoint>ru.lanit.chess.MainUtf8</project.entryPoint>
       </properties>
     </profile>
   </profiles>
@@ -75,7 +75,7 @@
             <archive>
               <manifest>
                 <addClasspath>true</addClasspath>
-                <mainClass>ru.lanit.chess.Main</mainClass>
+                <mainClass>${project.entryPoint}</mainClass>
               </manifest>
             </archive>
           </configuration>

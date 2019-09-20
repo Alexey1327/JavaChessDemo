@@ -124,6 +124,8 @@ class Game {
             piece1.setAlive(false);
             AbstractPiece bestDeadPiece = getBestPieceForChange();
             board.field[variant.getToX()][variant.getToY()] = bestDeadPiece;
+            bestDeadPiece.setX(piece1.getX());
+            bestDeadPiece.setY(piece1.getY());
             bestDeadPiece.setAlive(true);
             System.out.println("It's alive!!! New Piece - " + bestDeadPiece.getPieceName());
         }

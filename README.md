@@ -7,7 +7,7 @@
 Пешка меняется на любую фигуру по приоритету ферзь-ладья-слон-конь
 
 Вид вывода игры на экран:
-1 MoveVariant{White Pawn A2 -> A3, resultWeight=0, moveResult=MOVE}
+`1 MoveVariant{White Pawn A2 -> A3, resultWeight=0, moveResult=MOVE}
    _A_B_C_D_E_F_G_H_
 8 | r n b q k b n r | 8 
 7 | p p p p p p p p | 7 
@@ -43,3 +43,4 @@
 2 | . . . . . P P P | 2 
 1 | . . r . . . K R | 1 
    ¯A¯B¯C¯D¯E¯F¯G¯H¯
+`

@@ -23,7 +23,7 @@ public class ChessBoard {
         return moveCounter;
     }
 
-    public static void setPrintTypeAsUtf8(boolean printTypeAsUtf8) {
+    static void setPrintTypeAsUtf8(boolean printTypeAsUtf8) {
         printAsUtf8 = printTypeAsUtf8;
     }
 
@@ -122,11 +122,11 @@ public class ChessBoard {
         StringBuilder result = new StringBuilder();
         result.append("   _A_B_C_D_E_F_G_H_\n");
         for (int y = 7; y >= 0; y--) {
-            result.append(Character.toString('1' + y)).append(" | ");
+            result.append((char)('1' + y)).append(" | ");
             for (int x = 0; x < 8; x++) {
                 result.append(this.getPieceSymbolByCoords(x, y)).append(" ");
             }
-            result.append("| ").append(Character.toString('1' + y)).append(" \n");
+            result.append("| ").append((char)('1' + y)).append(" \n");
         }
         if (ChessBoard.isPrintAsUtf8()) {
             result.append("   ¯A¯B¯C¯D¯E¯F¯G¯H¯\n");
@@ -149,7 +149,7 @@ public class ChessBoard {
     }
 
     static String getChessCoords(int x, int y) {
-        return Character.toString('A'+x) + Character.toString('1'+y);
+        return String.valueOf((char) ('A' + x)) + (char)('1' + y);
     }
 
     boolean checkDraw() {

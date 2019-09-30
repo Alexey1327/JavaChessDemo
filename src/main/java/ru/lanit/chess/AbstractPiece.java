@@ -19,7 +19,7 @@ public abstract class AbstractPiece implements Piece {
         this.color = color;
     }
 
-    public String getName() {
+    protected String getName() {
         return name;
     }
 
@@ -39,7 +39,7 @@ public abstract class AbstractPiece implements Piece {
 
     public abstract MoveVariants getMoveVariants(ChessBoard board);
 
-    public String getPieceName() {
+    String getPieceName() {
         if (color == Color.WHITE) {
             return "White " + name;
         } else {

@@ -22,7 +22,7 @@ public class Game {
                 variants.addAll(piece.getMoveVariants(board));
             }
         }
-        variants.sort(Comparator.comparing(MoveVariant::getResultWeight));
+        variants.sort(Comparator.comparing(el -> -1 * el.getResultWeight()));
 
         return variants;
     }

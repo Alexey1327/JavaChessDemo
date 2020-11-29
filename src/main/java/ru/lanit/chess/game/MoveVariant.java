@@ -54,10 +54,8 @@ public class MoveVariant {
 
 
     static byte calculateEatWeight(AbstractPiece piece1, AbstractPiece piece2) {
-        if (piece1 instanceof Pawn) {
-            if (piece2.getY() == 7 || piece2.getY() == 0) {
-                return PROMOTION_EAT_PAWN_WEIGHT;
-            }
+        if (piece2 instanceof King) {
+            return EAT_KING_WEIGHT;
         }
         if (piece2 instanceof Knight) {
             return EAT_KNIGHT_WEIGHT;
@@ -71,11 +69,14 @@ public class MoveVariant {
         if (piece2 instanceof Queen) {
             return EAT_QUEEN_WEIGHT;
         }
-        if (piece2 instanceof King) {
-            return EAT_KING_WEIGHT;
-        }
         if (piece2 instanceof Pawn) {
             return EAT_PAWN_WEIGHT;
+        }
+
+        if (piece1 instanceof Pawn) {
+            if (piece2.getY() == 7 || piece2.getY() == 0) {
+                return PROMOTION_EAT_PAWN_WEIGHT;
+            }
         }
 
         throw new GameException("Error calculateEatWeight! " + piece1 + piece2);

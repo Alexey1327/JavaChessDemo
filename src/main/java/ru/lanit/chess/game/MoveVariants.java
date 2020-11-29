@@ -1,4 +1,4 @@
-package ru.lanit.chess;
+package ru.lanit.chess.game;
 
 import java.util.ArrayList;
 

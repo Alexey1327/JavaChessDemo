@@ -1,10 +1,9 @@
-package ru.lanit.chess.Piece;
+package ru.lanit.chess.piece;
 
-import ru.lanit.chess.AbstractPiece;
-import ru.lanit.chess.ChessBoard;
-import ru.lanit.chess.MoveVariants;
+import ru.lanit.chess.game.Board;
+import ru.lanit.chess.game.MoveVariants;
 
-public class Pawn extends AbstractPiece implements Piece {
+public class Pawn extends AbstractPiece implements PieceInterface {
 
     public Pawn(int x, int y, Color color) {
         super(x, y, color);
@@ -17,7 +16,7 @@ public class Pawn extends AbstractPiece implements Piece {
     }
 
     @Override
-    public MoveVariants getMoveVariants(ChessBoard board) {
+    public MoveVariants getMoveVariants(Board board) {
 
         int fromX = this.getX();
         int fromY = this.getY();
@@ -25,7 +24,7 @@ public class Pawn extends AbstractPiece implements Piece {
         MoveVariants variants = new MoveVariants();
 
         if (board.isFirstMove()) {
-            ChessBoard.addMoveVariant(board, variants, fromX, fromY, fromX, fromY + 2);
+            Board.addMoveVariant(board, variants, fromX, fromY, fromX, fromY + 2);
         }
 
         if (this.getColor() == Color.WHITE) {
@@ -37,17 +36,17 @@ public class Pawn extends AbstractPiece implements Piece {
         return variants;
     }
 
-    private static void addPawnEatVariants(ChessBoard board, MoveVariants variants, int fromX, int fromY, int toX, int toY) {
+    private static void addPawnEatVariants(Board board, MoveVariants variants, int fromX, int fromY, int toX, int toY) {
 
         if (board.isFreeCell(toX, toY)) {
-            ChessBoard.addMoveVariant(board, variants, fromX, fromY, toX, toY);
+            Board.addMoveVariant(board, variants, fromX, fromY, toX, toY);
         }
 
         if (!board.isFreeCell(toX - 1, toY)) {
-            ChessBoard.addMoveVariant(board, variants, fromX, fromY, toX - 1, toY);
+            Board.addMoveVariant(board, variants, fromX, fromY, toX - 1, toY);
         }
         if (!board.isFreeCell(toX + 1, toY)) {
-            ChessBoard.addMoveVariant(board, variants, fromX, fromY, toX + 1, toY);
+            Board.addMoveVariant(board, variants, fromX, fromY, toX + 1, toY);
         }
     }
 }

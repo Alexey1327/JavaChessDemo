@@ -1,4 +1,4 @@
-package ru.lanit.chess.Piece;
+package ru.lanit.chess.piece;
 
 public enum Color {
     WHITE,

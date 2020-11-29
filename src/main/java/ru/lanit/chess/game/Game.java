@@ -1,12 +1,18 @@
-package ru.lanit.chess;
+package ru.lanit.chess.game;
 
-import ru.lanit.chess.Piece.Pawn;
+import ru.lanit.chess.exception.CheckMateException;
+import ru.lanit.chess.exception.GameException;
+import ru.lanit.chess.exception.MateException;
+import ru.lanit.chess.piece.AbstractPiece;
+import ru.lanit.chess.piece.Pawn;
 
-class Game {
+import java.util.Comparator;
 
-    private final static int moveLimitForDraw = 100;
+public class Game {
 
-    private static ChessBoard board;
+    private final static int MOVE_LIMIT_FOR_DRAW = 100;
+
+    private static Board board;
 
     private static MoveVariants getAllPlayerMoves() {
         MoveVariants variants = new MoveVariants();
@@ -16,7 +22,7 @@ class Game {
                 variants.addAll(piece.getMoveVariants(board));
             }
         }
-        variants.sort(new MoveVariantComparator());
+        variants.sort(Comparator.comparing(MoveVariant::getResultWeight));
 
         return variants;
     }
@@ -70,7 +76,7 @@ class Game {
         return moveVariants;
     }
 
-    private static MoveVariant getBestPlayerMove() {
+    private static MoveVariant getBestPlayerMove() throws MateException, CheckMateException {
 
         MoveVariants opponentVariants = getOpponentCheckMateVariants();
 
@@ -86,7 +92,7 @@ class Game {
         if (variants.size() > 0) {
             MoveVariant variant = variants.get(0);
             if (variant.isDeadKingVariant()) {
-                throw new GameException("GameOver! Player WINS! King will was killed by move " + variant.toStringShort());
+                throw new CheckMateException("GameOver! Player WINS! King will be killed by move " + variant.toStringShort());
             }
             if (variant.getResultWeight() > 0) {
                 return variant;
@@ -94,7 +100,7 @@ class Game {
                 return variants.get((int)(Math.random() * variants.size()));
             }
         } else {
-            throw new GameException("Game Over! MAT! " + board.getOpponentPlayerColor() + " player win on " + (board.getMoveCounter()-1) + " moves!");
+            throw new MateException("Game Over! MAT! " + board.getOpponentPlayerColor() + " player win on " + (board.getMoveCounter()-1) + " moves!");
         }
     }
 
@@ -129,23 +135,23 @@ class Game {
         board.moveCounterInc();
     }
 
-    static void playGame(boolean printAsUTF8) {
+    public static void playGame(boolean printAsUTF8) {
 
-        ChessBoard.setPrintTypeAsUtf8(printAsUTF8);
+        Board.setPrintTypeAsUtf8(printAsUTF8);
 
-        board = new ChessBoard();
+        board = new Board();
         board.initBoard();
         System.out.println(board);
 
         while (true) {
             try {
                 movePiece(getBestPlayerMove());
-            } catch (GameException e){
+            } catch (CheckMateException | MateException | GameException e) {
                 System.out.println(e.getMessage());
                 break;
             }
             System.out.println(board);
-            if (board.getMoveCounter() > moveLimitForDraw) {
+            if (board.getMoveCounter() > MOVE_LIMIT_FOR_DRAW) {
                 if (board.checkDraw()) {
                     System.out.println("Nobody wins! Draw, on " + board.getMoveCounter() + " moves.");
                     break;

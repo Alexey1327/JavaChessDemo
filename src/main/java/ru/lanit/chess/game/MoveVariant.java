@@ -1,6 +1,7 @@
-package ru.lanit.chess;
+package ru.lanit.chess.game;
 
-import ru.lanit.chess.Piece.*;
+import ru.lanit.chess.exception.GameException;
+import ru.lanit.chess.piece.*;
 
 public class MoveVariant {
 
@@ -121,7 +122,7 @@ public class MoveVariant {
     }
 
     String toStringShort() {
-        return ChessBoard.getChessCoords(fromX, fromY) + " -> "  + ChessBoard.getChessCoords(toX, toY);
+        return Board.getChessCoords(fromX, fromY) + " -> "  + Board.getChessCoords(toX, toY);
     }
 
     int getToX() {

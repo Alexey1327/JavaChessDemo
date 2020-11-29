@@ -1,10 +1,9 @@
-package ru.lanit.chess.Piece;
+package ru.lanit.chess.piece;
 
-import ru.lanit.chess.AbstractPiece;
-import ru.lanit.chess.ChessBoard;
-import ru.lanit.chess.MoveVariants;
+import ru.lanit.chess.game.Board;
+import ru.lanit.chess.game.MoveVariants;
 
-public class Queen extends AbstractPiece implements Piece {
+public class Queen extends AbstractPiece implements PieceInterface {
 
     public Queen(int x, int y, Color color) {
         super(x, y, color);
@@ -17,7 +16,7 @@ public class Queen extends AbstractPiece implements Piece {
     }
 
     @Override
-    public MoveVariants getMoveVariants(ChessBoard board) {
+    public MoveVariants getMoveVariants(Board board) {
 
         MoveVariants variants = new MoveVariants();
         Bishop.addBishopMoveVariants(board, variants, this.getX(), this.getY());

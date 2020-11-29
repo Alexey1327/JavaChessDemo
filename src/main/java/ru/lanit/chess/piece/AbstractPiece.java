@@ -1,9 +1,9 @@
-package ru.lanit.chess;
+package ru.lanit.chess.piece;
 
-import ru.lanit.chess.Piece.Piece;
-import ru.lanit.chess.Piece.Color;
+import ru.lanit.chess.game.Board;
+import ru.lanit.chess.game.MoveVariants;
 
-public abstract class AbstractPiece implements Piece {
+public abstract class AbstractPiece implements PieceInterface {
 
     private int x, y;
 
@@ -37,9 +37,9 @@ public abstract class AbstractPiece implements Piece {
         }
     }
 
-    public abstract MoveVariants getMoveVariants(ChessBoard board);
+    public abstract MoveVariants getMoveVariants(Board board);
 
-    String getPieceName() {
+    public String getPieceName() {
         if (color == Color.WHITE) {
             return "White " + name;
         } else {
@@ -47,31 +47,31 @@ public abstract class AbstractPiece implements Piece {
         }
     }
 
-    boolean isAlive() {
+    public boolean isAlive() {
         return alive;
     }
 
-    void setAlive(boolean alive) {
+    public void setAlive(boolean alive) {
         this.alive = alive;
     }
 
-    protected int getX() {
+    public int getX() {
         return x;
     }
 
-    void setX(int x) {
+    public void setX(int x) {
         this.x = x;
     }
 
-    protected int getY() {
+    public int getY() {
         return y;
     }
 
-    void setY(int y) {
+    public void setY(int y) {
         this.y = y;
     }
 
-    protected Color getColor() {
+    public Color getColor() {
         return color;
     }
 

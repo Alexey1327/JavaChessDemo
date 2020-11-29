@@ -1,8 +1,9 @@
-package ru.lanit.chess;
+package ru.lanit.chess.game;
 
-import ru.lanit.chess.Piece.*;
+import ru.lanit.chess.exception.GameException;
+import ru.lanit.chess.piece.*;
 
-public class ChessBoard {
+public class Board {
 
     AbstractPiece[][] field;
 
@@ -13,7 +14,7 @@ public class ChessBoard {
 
     private static boolean printAsUtf8 = false;
 
-    public ChessBoard() {
+    public Board() {
         this.field = new AbstractPiece[8][8];
         this.blackPieces = new AbstractPiece[16];
         this.whitePieces = new AbstractPiece[16];
@@ -41,7 +42,7 @@ public class ChessBoard {
 
     private char getPieceSymbolByCoords(int x, int y) {
         if (field[x][y] != null) {
-            if (ChessBoard.isPrintAsUtf8()) {
+            if (Board.isPrintAsUtf8()) {
                 return field[x][y].getSymbol();
             } else {
                 return field[x][y].getTextSymbol();
@@ -128,7 +129,7 @@ public class ChessBoard {
             }
             result.append("| ").append((char)('1' + y)).append(" \n");
         }
-        if (ChessBoard.isPrintAsUtf8()) {
+        if (Board.isPrintAsUtf8()) {
             result.append("   ¯A¯B¯C¯D¯E¯F¯G¯H¯\n");
         } else {
             result.append("   -A-B-C-D-E-F-G-H-\n");
@@ -172,14 +173,14 @@ public class ChessBoard {
     /**
      * return true if move is valid and added
      */
-    public static boolean addMoveVariant(ChessBoard board, MoveVariants variants, int fromX, int fromY, int toX, int toY) {
+    public static boolean addMoveVariant(Board board, MoveVariants variants, int fromX, int fromY, int toX, int toY) {
 
         AbstractPiece piece1, piece2;
         MoveVariant variant;
         MoveResult moveResult;
 
         if (board.isFreeCell(fromX,fromY)) {
-            throw new GameException("Wrong move! Start coords has no alive piece!" + ChessBoard.getChessCoords(fromX, fromY));
+            throw new GameException("Wrong move! Start coords has no alive piece!" + Board.getChessCoords(fromX, fromY));
         }
 
         if (!board.isCellValid(toX,toY)) {
@@ -189,7 +190,7 @@ public class ChessBoard {
         piece1 =  board.getCell(fromX, fromY);
         String piece1Name;
 
-        if (ChessBoard.isPrintAsUtf8()) {
+        if (Board.isPrintAsUtf8()) {
             piece1Name = Character.toString(piece1.getSymbol());
         } else {
             piece1Name = piece1.getPieceName();
